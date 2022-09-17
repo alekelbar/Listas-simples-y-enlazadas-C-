@@ -38,26 +38,14 @@ struct Node {
   1. nodo->siguiente apunte a NULL.
   2. Lista apunte a nodo.
 */
-void insertarVacia(Node *&lista, exampleData data) {
-  if (!lista) {
-    Node *newNode = new Node(data);
-    newNode->next = NULL;
-    lista = newNode;
-  }
-}
+void insertarVacia(Node *&lista, exampleData data);
 
 // Diseñe un algoritmo para insertar un elemento al principio de una lista...
 /*
     1. Hacemos que nodo->siguiente apunte a Lista.
     2. Hacemos que Lista apunte a nodo.
  */
-void insertarInicio(Node *&lista, exampleData data) {
-  if (lista) {
-    Node *newNode = new Node(data);
-    newNode->next = lista;
-    lista = newNode;
-  }
-}
+void insertarInicio(Node *&lista, exampleData data);
 
 // diseñe un algoritmo para recorrer una lista simple..
 /*
@@ -67,30 +55,11 @@ void insertarInicio(Node *&lista, exampleData data) {
   3. Dentro del bucle asignaremos al índice el valor del nodo siguiente al
   índice actual.
 */
-void recorrido(Node *lista) {
-
-  if (lista) {
-    Node *node = lista;
-    while (node) {
-      std::cout << node->data.getValue() << std::endl;
-      node = node->next;
-    }
-  }
-}
+void recorrido(Node *lista);
 
 // diseñe un algoritmo que muestre los elementos de una lista de acuerdo a una
 // función filtro..
-void filtrarLista(Node *lista, std::function<bool(exampleData)> filter) {
-  if (lista) {
-    Node *node = lista;
-    while (node) {
-      if (filter(node->data)) {
-        std::cout << node->data.getValue() + ", " << std::endl;
-      }
-      node = node->next;
-    }
-  }
-}
+void filtrarLista(Node *lista, std::function<bool(exampleData)> filter);
 
 // Diseñe un algoritmo para insertar un elemento al final de una lista...
 /*
@@ -100,19 +69,7 @@ void filtrarLista(Node *lista, std::function<bool(exampleData)> filter) {
   2. Hacer que nodo->siguiente sea NULL.
   3. Hacer que ultimo->siguiente sea nodo.
 */
-void insertarFinal(Node *&lista, exampleData data) {
-
-  if (lista) {
-    Node *aux = lista;
-    while (aux) {
-      aux = aux->next;
-    }
-
-    Node *newNode = new Node(data);
-    newNode->next = NULL;
-    aux->next = newNode;
-  }
-}
+void insertarFinal(Node *&lista, exampleData data);
 
 // Diseñe un algoritmo para insertar un elemento en un nudo cualquiera de una
 // lista...
@@ -122,25 +79,7 @@ void insertarFinal(Node *&lista, exampleData data) {
   1. Hacer que nodo->siguiente señale a anterior->siguiente.
   2. Hacer que anterior->siguiente señale a nodo.
 */
-int insertarCualquier(Node *&lista, exampleData data, int index) {
-  if (lista) {
-    int cont = 0;
-    Node *aux = lista;
-    while (aux && cont < index) {
-      aux = aux->next;
-      cont++;
-    }
-    if (cont < index)
-      return -1;
-
-    Node *newNode = new Node(data);
-    newNode->next = aux->next;
-    aux->next = newNode;
-  }
-
-  // 1 si fue un exito, o la lista esta vacia...
-  return 1;
-}
+int insertarCualquier(Node *&lista, exampleData data, int index);
 
 // Diseñe un algoritmo para eliminar el primer nodo de una lista abierta...
 /*
@@ -149,15 +88,7 @@ int insertarCualquier(Node *&lista, exampleData data, int index) {
   >siguiente.
   3. Liberamos la memoria asignada al primer nodo, el que queremos eliminar.
 */
-void eliminaPrimero(Node *&lista) {
-
-  if (lista) {
-    Node *aux = lista;
-    lista = lista->next;
-    delete aux;
-  }
-}
-
+void eliminaPrimero(Node *&lista);
 // Diseñe un algoritmo para eliminar un elemento cualquiera de la lista
 // abierta.. index es el elemento siguiente...
 /*
@@ -166,44 +97,14 @@ void eliminaPrimero(Node *&lista) {
   que queremos eliminar: anterior->siguiente = nodo->siguiente.
   3. Eliminamos la memoria asociada al nodo que queremos eliminar.
 */
-int eliminaCualquier(Node *&lista, int index) {
-  if (lista) {
-    int cont = 0;
-    Node *aux = lista;
-    while (aux && cont < index) {
-      aux = aux->next;
-      cont++;
-    }
-    if (cont < index)
-      return -1;
-
-    // si existe un siguiente, es el que queremos eliminar..
-    if (!aux->next) {
-      Node *node = aux->next;
-      aux->next = node->next; // Si es el ultimo, será NULL
-      delete node;
-    }
-  }
-  return 1;
-}
+int eliminaCualquier(Node *&lista, int index);
 
 // Diseñe un algoritmo para ELIMINAR una lista por completo...
 /*
   El algoritmo genérico para borrar una lista completa consiste simplemente en
   borrar el primer elemento sucesivamente mientras la lista no esté vacía.
 */
-void vaciarLista(Node *&lista, int index) {
-
-  if (lista) {
-    Node *node = lista;
-    Node *toDelete = NULL;
-    while (node) {
-      toDelete = node;
-      node = node->next;
-      delete toDelete;
-    }
-  }
-}
+void vaciarLista(Node *&lista, int index);
 
 // Ejemplo de una lista abierta, y ordenada...
 /*
@@ -221,27 +122,7 @@ void vaciarLista(Node *&lista, int index) {
   4. Ahora ya tenemos anterior señalando al nodo adecuado, así que insertamos
   el nuevo nodo a continuación de él.
 */
-void insertarOrdenado(Node *&lista, exampleData data) {
-
-  Node *newNode = new Node(data);
-  if (!lista || lista->data.getValue() > data.getValue()) {
-    insertarInicio(lista, data);
-  } else {
-    // * NOTE: Se llama anterior por que se posicionara una posicioón antes del
-    // * objetivo..
-    Node *anterior = lista;
-    while (anterior->next &&
-           anterior->next->data.getValue() <= data.getValue()) {
-      anterior = anterior->next;
-    }
-
-    Node *node = new Node(data);
-    node->next = anterior->next;
-    // * NOTE: En caso de ser el ultimo, me devuelve el puntero, no NULL...
-    anterior->next = node;
-  }
-}
-
+void insertarOrdenado(Node *&lista, exampleData data);
 /*
    1. Lo primero será localizar el nodo a eliminar, si es que existe. Pero sin
    perder el puntero al nodo anterior. Partiremos del nodo primero, y del valor
@@ -270,57 +151,14 @@ void insertarOrdenado(Node *&lista, exampleData data) {
 
    9. Después de 7 u 8, liberamos la memoria de nodo.
  */
-void eliminarOrdenado(Node *&lista, exampleData data) {
-  /*
-    1. Lo primero será localizar el nodo a eliminar, si es que existe. Pero sin
-    perder el puntero al nodo anterior. Partiremos del nodo primero, y del valor
-    NULL para anterior. Y avanzaremos mientras nodo no sea NULL o
-    mientras que el valor almacenado en nodo sea menor que el que buscamos.
-
-    2. Ahora pueden darse tres casos:
-
-    3. Que el nodo sea NULL, esto indica que todos los valores almacenados en la
-    lista son menores que el que buscamos y el nodo que buscamos no existe.
-    Retornaremos sin borrar nada.
-
-    4. Que el valor almacenado en nodo sea mayor que el que buscamos, en ese
-    caso también retornaremos sin borrar nada, ya que esto indica que el nodo
-    que buscamos no existe.
-
-    5. Que el valor almacenado en el nodo sea igual al que buscamos.
-
-    6. De nuevo existen dos casos:
-    7. Que anterior sea NULL. Esto indicaría que el nodo que queremos borrar es
-    el primero, así que modificamos el valor de Lista para que apunte al nodo
-    siguiente al que queremos borrar.
-
-    8. Que anterior no sea NULL, el nodo no es el primero, así que asignamos a
-    anterior->siguiente la dirección de nodo->siguiente.
-
-    9. Después de 7 u 8, liberamos la memoria de nodo.
-  */
-  Node *anterior = NULL;
-  Node *node = lista;
-  while (node || node->data.getValue() < data.getValue()) {
-    /* code */
-    anterior = node;
-    node = node->next;
-  }
-
-  if (!node || node->data.getValue() != data.getValue())
-    return;
-
-  if (!anterior) {
-    // Esto es en retrospectiva, dejar la lista vacia en NULL...
-    lista = node->next;
-  } else {
-    // Este caso se da si node apunta al primero...
-    anterior->next = node->next;
-  }
-  delete node;
-}
+void eliminarOrdenado(Node *&lista, exampleData data);
 
 // usando clases...
+
+// * Tarea: IDENTIFICAR que metodos faltan en la clase, e implementarlos.
+// * Tarea: IMPLEMENTAR la sobrecarga del operador ==, y RECORRIENDO toda la
+// * lista Hacer la sobrecarga apropiada.
+
 class nodo {
 public:
   nodo(int v, nodo *sig = NULL) {
